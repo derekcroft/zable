@@ -1,0 +1,53 @@
+/*Any changes made to this stylesheet should also go into  "/public/display-table.css" of app and vice versa */
+
+/**************************************************************************************************/
+/* Begin: Pagination styling                                                                      */
+/**************************************************************************************************/
+
+div .brownFilterResultsBox {
+    text-align: right;
+}
+
+/* Div that pagination elements are contained in */
+div .pagination {
+    padding: 3px 3px 3px 15px;
+    margin: 3px;
+    display: inline;
+}
+
+/* Next and/or previous links (whichever are active) and any active page links */
+div .pagination a {
+    border: 2px solid #CECCB6;
+    color: #948A63;
+    padding: 0 8px;
+    margin: 0;
+    text-decoration: none;
+}
+
+/* Current page */
+div .pagination em {
+    background-color: #94794E;
+    border: 2px solid #8C6B3E;
+    color: #FFFFFF;
+    padding: 0 8px;
+    margin: 0;
+    text-decoration: none;
+    font-style: normal;
+}
+
+/* Either next/previous if disabled */
+div .pagination span.disabled {
+    background: url("../images/common/pagination_bg_dis.gif") repeat-x scroll center top transparent;
+    border: 1px solid #E7E7E7;
+    color: #A8A8A8;
+    padding: 0 8px;
+}
+
+div .pagination a:hover,
+div .pagination a:active {
+    border: 2px solid #333333;
+}
+
+/**************************************************************************************************/
+/* End: Pagination styling                                                                      */
+/**************************************************************************************************/

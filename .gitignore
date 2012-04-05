@@ -1,0 +1,4 @@
+.idea*
+*.log
+*.lock
+*.sqlite3

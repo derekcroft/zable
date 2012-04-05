@@ -1,0 +1,11 @@
+= DisplayTable
+
+
+display_table @relationships,
+              Relationship,
+              :table_class => ["wmg-result-list", "hrca-table"],
+              :columns => [
+                  :line_of_business,
+                  :name
+                  # etc
+              ]
