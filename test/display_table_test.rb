@@ -36,7 +36,7 @@ class DisplayTableTest < ActionView::TestCase
   #   column(:delete, sort: false) {|c| link_to("Delete", "#") } if permitted_to?(:delete, :complaints)
   # end
   test "helper method can be called with a block that returns nil" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     assert_nothing_raised { display_table collection, Item, &@COLUMN_PROC_RETURNING_NIL }
   end
 
@@ -150,13 +150,13 @@ class DisplayTableTest < ActionView::TestCase
 
   # helper called with a non-empty collection
   test "main helper method returns an html table" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     assert_html_table collection
   end
 
   # helper called with table classes
   test "html table can have additional classes" do
-    collection    = 2.times.collect { Factory :item }
+    collection    = 2.times.collect { FactoryGirl.create :item }
     table_classes = ["wmg-result-list", "hrca-table"]
     html          = display_table collection, Item, :table_class => table_classes, &@COLUMN_PROC
     table_classes.each do |tc|
@@ -173,7 +173,7 @@ class DisplayTableTest < ActionView::TestCase
   end
 
   test "display_table passes entry_name on to the pagination links" do
-    collection = 2.times.map { Factory :item }
+    collection = 2.times.map { FactoryGirl.create :item }
     expects(:page_entries_info).twice.with(collection, {:entry_name => 'dealy'}).returns("")
     stubs :will_paginate => ""
     display_table(collection, Item, :paginate => true, :entry_name => 'dealy', &@COLUMN_PROC)
@@ -181,14 +181,14 @@ class DisplayTableTest < ActionView::TestCase
 
   test "display_table passes params on to the pagination links" do
     params = {:awesome => :tastic}
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     WillPaginate::LinkWithParamsRenderer.expects(:new).with(params).at_least_once
     self.stubs(:page_entries_info => "", :will_paginate => "")
     display_table(collection, Item, :paginate => true, :params => params, &@COLUMN_PROC)
   end
 
   test "display_table can append a string before the closing tbody tag" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     appended = "<tr><td>Appended!</td></tr>"
     html = display_table(collection, Item, :append => appended.html_safe, &@COLUMN_PROC)
     assert_match /#{appended}\s*<\/tbody>/, html

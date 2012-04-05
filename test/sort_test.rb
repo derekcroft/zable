@@ -74,12 +74,12 @@ class SortTest < ActiveSupport::TestCase
   protected
   def setup_sort_records
     @things ||= [
-        Factory(:thing, :key => "21", :some_boolean => true, :name => "jeff"),
-        Factory(:thing, :key => "22", :some_boolean => false, :name => "rachel"),
-        Factory(:thing, :key => "23", :some_boolean => true, :name => "andrew"),
-        Factory(:thing, :key => "25", :some_boolean => false, :name => "jeff"),
-        Factory(:thing, :key => "26", :some_boolean => true, :name => "drew"),
-        Factory(:thing, :key => "11", :some_boolean => false, :name => "graham")
+        FactoryGirl.create(:thing, :key => "21", :some_boolean => true, :name => "jeff"),
+        FactoryGirl.create(:thing, :key => "22", :some_boolean => false, :name => "rachel"),
+        FactoryGirl.create(:thing, :key => "23", :some_boolean => true, :name => "andrew"),
+        FactoryGirl.create(:thing, :key => "25", :some_boolean => false, :name => "jeff"),
+        FactoryGirl.create(:thing, :key => "26", :some_boolean => true, :name => "drew"),
+        FactoryGirl.create(:thing, :key => "11", :some_boolean => false, :name => "graham")
     ]
   end
 

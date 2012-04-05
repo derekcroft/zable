@@ -4,7 +4,7 @@ class ColumnsTest < ActionView::TestCase
 
   ## test the helper method
   test "table has the expected headers" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     assert_header_cell_match {
       display_table collection, Item do
         column :string_column
@@ -15,7 +15,7 @@ class ColumnsTest < ActionView::TestCase
   end
 
   test "header cells title properly" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     t = display_table collection, Item do
       column :string_column
       column :integer_column, :title => "Overridden Integer"
@@ -25,7 +25,7 @@ class ColumnsTest < ActionView::TestCase
   end
 
   test "header cell links to same page with sort parameters" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     t = display_table collection, Item do
       column :string_column
       column :integer_column
@@ -35,7 +35,7 @@ class ColumnsTest < ActionView::TestCase
   end
 
   test "header call with false sort does not contain a link" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     t = display_table collection, Item do
       column :integer_column, :sort => false
     end
@@ -43,7 +43,7 @@ class ColumnsTest < ActionView::TestCase
   end
 
   test "header call with false sort and title does not contain a link" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     t = display_table collection, Item do
       column :integer_column, :title => "Integer Column Header", :sort => false
     end

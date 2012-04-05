@@ -6,11 +6,11 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
 
   setup do
     @items = [
-        Factory(:item, :integer_column_2 => 1),
-        Factory(:item, :integer_column_2 => 2),
-        Factory(:item, :integer_column_2 => 3),
-        Factory(:item, :integer_column_2 => 4),
-        Factory(:item, :integer_column_2 => 5)
+        FactoryGirl.create(:item, :integer_column_2 => 1),
+        FactoryGirl.create(:item, :integer_column_2 => 2),
+        FactoryGirl.create(:item, :integer_column_2 => 3),
+        FactoryGirl.create(:item, :integer_column_2 => 4),
+        FactoryGirl.create(:item, :integer_column_2 => 5)
     ]
   end
 

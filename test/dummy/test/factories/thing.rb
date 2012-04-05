@@ -1,2 +1,3 @@
-Factory.define :thing do |i|
+FactoryGirl.define do
+  factory :thing
 end

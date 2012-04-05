@@ -75,11 +75,11 @@ class SearchTest < ActiveSupport::TestCase
   protected
   def setup_search_data
     @things ||= [
-        Factory(:thing, :key => "21", :name => "jeff"),
-        Factory(:thing, :key => "22", :name => "rachel"),
-        Factory(:thing, :key => "23", :name => "andrew"),
-        Factory(:thing, :key => "25", :name => "jeff"),
-        Factory(:thing, :key => "26", :name => "drew")
+        FactoryGirl.create(:thing, :key => "21", :name => "jeff"),
+        FactoryGirl.create(:thing, :key => "22", :name => "rachel"),
+        FactoryGirl.create(:thing, :key => "23", :name => "andrew"),
+        FactoryGirl.create(:thing, :key => "25", :name => "jeff"),
+        FactoryGirl.create(:thing, :key => "26", :name => "drew")
     ]
   end
 

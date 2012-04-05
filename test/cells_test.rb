@@ -7,7 +7,7 @@ class CellsTest < ActionView::TestCase
   end
 
   test "helper returns a body cell for each attribute" do
-    collection = 2.times.collect { Factory :item }
+    collection = 2.times.collect { FactoryGirl.create :item }
     html = display_table collection, Item, &@COLUMN_PROC
     @COLUMNS.each do |c|
       assert_match /<tr[^<]*>.*<td[^>]+id=\"item-\d+-#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
@@ -15,7 +15,7 @@ class CellsTest < ActionView::TestCase
   end
   
   test "table row has a body cell for each attribute" do
-    item = Factory :item
+    item = FactoryGirl.create :item
     html = table_body_row item, @COLUMNS
     @COLUMNS.each do |c|
       assert_match /<tr[^<]*>.*<td[^>]+id=\"item-\d+-#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
@@ -25,7 +25,7 @@ class CellsTest < ActionView::TestCase
   end
 
   test "cell value renders with a block if block is passed to helper" do
-    collection = [ Factory(:item, :string_column => "Hello") ]
+    collection = [ FactoryGirl.create(:item, :string_column => "Hello") ]
     html = display_table collection, Item do
       column :string_column do |i|
         i.string_column.upcase + " - extra stuff"
@@ -38,7 +38,7 @@ class CellsTest < ActionView::TestCase
   end
 
   test "cell value for string or integer attribute is the attribute value" do
-    item = Factory :item, :string_column => "Hello", :integer_column => 7
+    item = FactoryGirl.create :item, :string_column => "Hello", :integer_column => 7
 
     # assert correct string value
     col = {:name => "string_column"}
@@ -52,7 +52,7 @@ class CellsTest < ActionView::TestCase
   end
 
   test "cell value that is a date is formatted correctly" do
-    item = Factory :item, :date_column => Date.new(2009, 12, 11)
+    item = FactoryGirl.create :item, :date_column => Date.new(2009, 12, 11)
 
     # assert correct date value
     col = {:name => "date_column"}
@@ -61,7 +61,7 @@ class CellsTest < ActionView::TestCase
   end
 
   test "cell value renders with a block if block is given" do
-    item = Factory :item, :string_column => "Hello"
+    item = FactoryGirl.create :item, :string_column => "Hello"
     col = {:name => "string_column"}
     html = table_body_row_cell col, item do |i|
       i.string_column.upcase + " - extra stuff"
@@ -70,7 +70,7 @@ class CellsTest < ActionView::TestCase
   end
 
   test "cell value renders if attribute is a method" do
-    item = Factory :item
+    item = FactoryGirl.create :item
     Item.any_instance.expects(:some_method).returns("some_value")
     col = {:name => "some_method"}
     html = table_body_row_cell col, item
