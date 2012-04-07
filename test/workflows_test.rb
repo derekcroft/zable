@@ -126,12 +126,4 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     assert_select "table th#item-integer-column-2 img", false
   end
 
-  # Style sheet inclusion
-  test "zable style sheet is included" do
-    get "/items", :sort => {}
-    assert_select "link" do |elem|
-      assert_match /zable\.css/, elem[0].to_s
-    end
-  end
-
 end

@@ -8,7 +8,7 @@ module ZableHelper
   def zable(collection, klass, args={}, &block)
     reset_cycle("zable_cycle")
 
-    html = stylesheet_link_tag("zable")
+    html = ''.html_safe #stylesheet_link_tag("zable")
     html << pagination_element(collection, args.slice(:entry_name, :params)) if args[:paginate]
     html << zable_element(args, block, collection, klass, args[:params])
     html << pagination_element(collection, args.slice(:entry_name, :params)) if args[:paginate]
