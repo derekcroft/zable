@@ -32,7 +32,7 @@ module Zable
     end
 
     def header_cell_id(klass, attr)
-      "#{idify klass.name}-#{idify attr[:name]}".html_safe
+      "#{idify klass.name}_#{idify attr[:name]}".html_safe
     end
 
     def current_url
@@ -57,7 +57,7 @@ module Zable
     end
 
     def sort_arrow_image_file(attr)
-      attr[:sort_order] == :desc ? "common/ascending.gif" : "common/descending.gif"
+      attr[:sort_order] == :desc ? "ascending.gif" : "descending.gif"
     end
 
     def header_cell_href(attr, columns)
@@ -124,11 +124,11 @@ module Zable
     end
 
     def body_row_id(elem)
-      "#{idify_class_name(elem)}-#{elem.id}".html_safe
+      "#{idify_class_name(elem)}_#{elem.id}".html_safe
     end
 
     def body_cell_id(ac, elem)
-      "#{idify_class_name(elem)}-#{elem.id}-#{idify ac[:name]}".html_safe
+      "#{idify_class_name(elem)}_#{elem.id}_#{idify ac[:name]}".html_safe
     end
 
     def body_row_class
@@ -141,7 +141,7 @@ module Zable
     end
 
     def idify(val)
-      val.to_s.demodulize.underscore.dasherize
+      val.to_s.demodulize.underscore
     end
 
     def tag_args(args)

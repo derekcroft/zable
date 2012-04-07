@@ -5,7 +5,7 @@ class RowsTest < ActionView::TestCase
   def assert_body_rows(collection)
     tbody = yield
     collection.each do |i|
-      assert_match /<tbody>.*<tr[^>]+id="item-#{i[:id]}"/, tbody
+      assert_match /<tbody>.*<tr[^>]+id="item_#{i[:id]}"/, tbody
     end
   end
 
@@ -26,7 +26,7 @@ class RowsTest < ActionView::TestCase
     collection = 2.times.collect { FactoryGirl.create :item }
     html = zable collection, Item, &@COLUMN_PROC
     @COLUMNS.each do |c|
-      assert_match /<tr[^<]*>.*<td[^>]+id=\"item-\d+-#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
+      assert_match /<tr[^<]*>.*<td[^>]+id=\"item_\d+_#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
     end
   end
   
@@ -34,7 +34,7 @@ class RowsTest < ActionView::TestCase
     item = FactoryGirl.create :item
     html = table_body_row item, @COLUMNS
     @COLUMNS.each do |c|
-      assert_match /<tr[^<]*>.*<td[^>]+id=\"item-\d+-#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
+      assert_match /<tr[^<]*>.*<td[^>]+id=\"item_\d+_#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
     end
     tds = html.scan(/<td[^<]+>/)
     assert_equal tds.size, @COLUMNS.size
@@ -47,7 +47,7 @@ class RowsTest < ActionView::TestCase
 
   test "table row id is of the format singularmodel-id" do
     item = FactoryGirl.create :item, :id => 15
-    assert_match /<tr[^>]+id="item-15">.*<\/tr>/, table_body_row(item, @COLUMNS)
+    assert_match /<tr[^>]+id="item_15">.*<\/tr>/, table_body_row(item, @COLUMNS)
   end
 
 end

@@ -20,8 +20,8 @@ class ColumnsTest < ActionView::TestCase
       column :string_column
       column :integer_column, :title => "Overridden Integer"
     end
-    assert_header_cell_regex_match "item-string-column", "String Column", t
-    assert_header_cell_regex_match "item-integer-column", "Overridden Integer", t
+    assert_header_cell_regex_match "item_string_column", "String Column", t
+    assert_header_cell_regex_match "item_integer_column", "Overridden Integer", t
   end
 
   test "header cell links to same page with sort parameters" do
@@ -30,8 +30,8 @@ class ColumnsTest < ActionView::TestCase
       column :string_column
       column :integer_column
     end
-    assert_match header_cell_with_sort_regex("item-string-column", "String Column", "string_column"), t
-    assert_match header_cell_with_sort_regex("item-integer-column", "Integer Column", "integer_column"), t
+    assert_match header_cell_with_sort_regex("item_string_column", "String Column", "string_column"), t
+    assert_match header_cell_with_sort_regex("item_integer_column", "Integer Column", "integer_column"), t
   end
 
   test "header call with false sort does not contain a link" do
@@ -57,18 +57,18 @@ class ColumnsTest < ActionView::TestCase
 
   test "header cells appear in the order specified" do
     th = table_header_cells Item, @COLUMNS
-    cell_ids = th.scan(/<th[^<]id=['"]item-([^<]+)['"]>/).flatten.collect(&:underscore).collect(&:to_sym)
+    cell_ids = th.scan(/<th[^<]id=['"]item_([^<]+)['"]>/).flatten.collect(&:underscore).collect(&:to_sym)
     assert_equal cell_ids, @COLUMNS.collect { |c| c[:name] }.collect(&:to_sym)
   end
 
-  test "header cell ids are formatted like model-attribute" do
+  test "header cell ids are formatted like model_attribute" do
     col = {:name => "some_attribute"}
     id  = header_cell_id(Item, col)
-    assert_match /item-some-attribute/, id
+    assert_match /item_some_attribute/, id
   end
 
   test "header cell titles default to titleized column name if not overridden" do
-    assert_header_cell_title :integer_column, "item-integer-column", "Integer Column"
+    assert_header_cell_title :integer_column, "item_integer_column", "Integer Column"
   end
 
   test "header cell titles use name attribute if present" do
@@ -79,7 +79,7 @@ class ColumnsTest < ActionView::TestCase
   def assert_header_cell_match
     th = yield
     @COLUMNS.each do |ac|
-      assert_match /<th[^>]+id=\"item-#{ac[:name].to_s.dasherize}\">/, th
+      assert_match /<th[^>]+id=\"item_#{ac[:name].to_s}\">/, th
     end
   end
 

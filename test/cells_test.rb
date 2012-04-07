@@ -10,7 +10,7 @@ class CellsTest < ActionView::TestCase
     collection = 2.times.collect { FactoryGirl.create :item }
     html = zable collection, Item, &@COLUMN_PROC
     @COLUMNS.each do |c|
-      assert_match /<tr[^<]*>.*<td[^>]+id=\"item-\d+-#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
+      assert_match /<tr[^<]*>.*<td[^>]+id=\"item_\d+_#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
     end
   end
   
@@ -18,7 +18,7 @@ class CellsTest < ActionView::TestCase
     item = FactoryGirl.create :item
     html = table_body_row item, @COLUMNS
     @COLUMNS.each do |c|
-      assert_match /<tr[^<]*>.*<td[^>]+id=\"item-\d+-#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
+      assert_match /<tr[^<]*>.*<td[^>]+id=\"item_\d+_#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
     end
     tds = html.scan(/<td[^<]+>/)
     assert_equal tds.size, @COLUMNS.size
@@ -34,7 +34,7 @@ class CellsTest < ActionView::TestCase
     assert_cell_contains "HELLO - extra stuff", html
   end
 
-  test "cell id is of the format singularmodel-id-attribute" do
+  test "cell id is of the format singularmodel_id_attribute" do
   end
 
   test "cell value for string or integer attribute is the attribute value" do

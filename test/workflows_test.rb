@@ -63,7 +63,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   test "column headers are links to sort by that column" do
     get "/items"
     assert_response :success
-    assert_select "table th#item-string-column a"
+    assert_select "table th#item_string_column a"
   end
 
   test "column header sorts by opposite direction when clicked" do
@@ -72,21 +72,21 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
 
   test "column header arrow points down when column is sorted ascending" do
     get "/items", :sort => { :attr => "integer_column_2", :order => "asc" }
-    assert_select "table th#item-integer-column-2 img" do |elem|
+    assert_select "table th#item_integer_column_2 img" do |elem|
       assert_match /src=\".*ascending.*\"/, elem[0].to_s
     end
   end
 
   test "column header arrow points up when column is sorted descending" do
     get "/items", :sort => { :attr => "integer_column_2", :order => "desc" }
-    assert_select "table th#item-integer-column-2 img" do |elem|
+    assert_select "table th#item_integer_column_2 img" do |elem|
       assert_match /src=\".*descending.*\"/, elem[0].to_s
     end
   end
 
   test "no column header arrow when column is not sorted" do
     get "/items", :sort => { :attr => "integer_column", :order => "desc" }
-    assert_select "table th#item-integer-column-2 img", false
+    assert_select "table th#item_integer_column_2 img", false
   end
 
   # State change cases
@@ -98,7 +98,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
         :sort => { :attr => "integer_column_2", :order => "desc" },
         :search => { :integer_column_2 => '3' }
     assert_response :success
-    assert_select "table th#item-integer-column-2 a" do |elem|
+    assert_select "table th#item_integer_column_2 a" do |elem|
       elem.each do |e|
         assert_match /href="[^>]*search\[integer_column_2\]=3[^>]*"/, e.to_s
       end
@@ -123,7 +123,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     xhr :get, "/items", {:sort => { :attr => "integer_column", :order => "desc"}}
     assert_response :success
     assert_not_nil assigns[:items]
-    assert_select "table th#item-integer-column-2 img", false
+    assert_select "table th#item_integer_column_2 img", false
   end
 
 end
