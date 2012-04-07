@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name = "zable"
   s.summary = "HTML tables"
   s.description = "HTML searching, sorting and pagination made dead simple"
-  s.files = Dir["lib/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["lib/**/*", "app/**/*", "public/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.version = "0.0.1"
   s.authors = ["Derek Croft"]
 
