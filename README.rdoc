@@ -1,11 +1,8 @@
-= DisplayTable
+= Zable
 
 
-display_table @relationships,
-              Relationship,
-              :table_class => ["wmg-result-list", "hrca-table"],
-              :columns => [
-                  :line_of_business,
-                  :name
-                  # etc
-              ]
+zable @items, Item, :table_class => ["items-table", "shiny-colorful-table"] do
+  column(:name)
+  column(:color)
+  column(:owner_name) { |item| item.owner.name }
+end
