@@ -6,4 +6,6 @@ Gem::Specification.new do |s|
   s.description = "HTML searching, sorting and pagination made dead simple"
   s.files = Dir["lib/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.version = "0.0.1"
+
+  s.add_runtime_dependency 'will_paginate'
 end
