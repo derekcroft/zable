@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.summary = "HTML tables"
   s.description = "HTML searching, sorting and pagination made dead simple"
   s.files = Dir["lib/**/*", "app/**/*", "public/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.version = "0.0.4"
+  s.version = "0.0.5"
   s.authors = ["Derek Croft"]
 
   s.add_runtime_dependency 'will_paginate'
