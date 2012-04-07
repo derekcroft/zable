@@ -1,4 +1,4 @@
-module DisplayTable
+module Zable
   module ActiveRecord
 
     module ClassMethods
@@ -55,5 +55,5 @@ module DisplayTable
 
 end
 
-ActiveRecord::Base.send :extend, DisplayTable::ActiveRecord::ClassMethods
-ActiveRecord::Base.send :extend, DisplayTable::ActiveRecord::ClassMethods::Helpers
+ActiveRecord::Base.send :extend, Zable::ActiveRecord::ClassMethods
+ActiveRecord::Base.send :extend, Zable::ActiveRecord::ClassMethods::Helpers

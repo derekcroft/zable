@@ -1,11 +1,11 @@
-module DisplayTable
+module Zable
 
-  require 'display_table/engine'
-  require 'display_table/active_record'
-  require 'display_table/html'
-  require 'display_table/sort'
-  require 'display_table/search'
-  require 'display_table/hash'
-  require 'display_table/will_paginate'
+  require 'zable/engine'
+  require 'zable/active_record'
+  require 'zable/html'
+  require 'zable/sort'
+  require 'zable/search'
+  require 'zable/hash'
+  require 'zable/will_paginate'
 
 end

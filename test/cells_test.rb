@@ -8,7 +8,7 @@ class CellsTest < ActionView::TestCase
 
   test "helper returns a body cell for each attribute" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    html = display_table collection, Item, &@COLUMN_PROC
+    html = zable collection, Item, &@COLUMN_PROC
     @COLUMNS.each do |c|
       assert_match /<tr[^<]*>.*<td[^>]+id=\"item-\d+-#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
     end
@@ -26,7 +26,7 @@ class CellsTest < ActionView::TestCase
 
   test "cell value renders with a block if block is passed to helper" do
     collection = [ FactoryGirl.create(:item, :string_column => "Hello") ]
-    html = display_table collection, Item do
+    html = zable collection, Item do
       column :string_column do |i|
         i.string_column.upcase + " - extra stuff"
       end

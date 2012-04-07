@@ -1,6 +1,6 @@
 require 'test_helper'
 
-include DisplayTableHelper
+include ZableHelper
 
 class WorkflowsTest < ActionDispatch::IntegrationTest
 
@@ -127,10 +127,10 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   end
 
   # Style sheet inclusion
-  test "display table style sheet is included" do
+  test "zable style sheet is included" do
     get "/items", :sort => {}
     assert_select "link" do |elem|
-      assert_match /display-table\.css/, elem[0].to_s
+      assert_match /zable\.css/, elem[0].to_s
     end
   end
 

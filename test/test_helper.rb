@@ -21,10 +21,10 @@ require 'mocha'
 
 module TestPatches
 
-  # rather than including DisplayTableHelper into Object, which is rather imprecise,
+  # rather than including ZableHelper into Object, which is rather imprecise,
   # include it into the ActionView::TestCase
   def self.included(base)
-    base.send :include, DisplayTableHelper
+    base.send :include, ZableHelper
   end
 
   def setup
@@ -45,14 +45,14 @@ module TestPatches
     mock_controller
   end
 
-  # Create a mock controller for DisplayTableHelper to interact with in unit tests
+  # Create a mock controller for ZableHelper to interact with in unit tests
   def mock_controller
     @controller = ActionView::TestCase::TestController.new
     @controller.request = ActionDispatch::TestRequest.new
-    @controller.request.instance_variable_set :@display_table_columns, []
+    @controller.request.instance_variable_set :@zable_columns, []
   end
 
-  # DisplayTableHelper stores data on the controller's request,
+  # ZableHelper stores data on the controller's request,
   # this method is the mock implementation of ActionView::Base#controller
   def controller
     @controller

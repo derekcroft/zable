@@ -1,4 +1,4 @@
-module DisplayTable
+module Zable
   module Search
     module ActiveRecord
       module ClassMethods
@@ -50,4 +50,4 @@ module DisplayTable
   end
 end
 
-ActiveRecord::Base.send :extend, DisplayTable::Search::ActiveRecord::ClassMethods
+ActiveRecord::Base.send :extend, Zable::Search::ActiveRecord::ClassMethods

@@ -1,21 +1,21 @@
-module DisplayTableHelper
-  include DisplayTable::WillPaginate
+module ZableHelper
+  include Zable::WillPaginate
 
   def self.included(base)
-    base.send :include, DisplayTable::Html
+    base.send :include, Zable::Html
   end
 
-  def display_table(collection, klass, args={}, &block)
-    reset_cycle("display_table_cycle")
+  def zable(collection, klass, args={}, &block)
+    reset_cycle("zable_cycle")
 
-    html = stylesheet_link_tag("display-table")
+    html = stylesheet_link_tag("zable")
     html << pagination_element(collection, args.slice(:entry_name, :params)) if args[:paginate]
-    html << display_table_element(args, block, collection, klass, args[:params])
+    html << zable_element(args, block, collection, klass, args[:params])
     html << pagination_element(collection, args.slice(:entry_name, :params)) if args[:paginate]
     html
   end
 
-  def display_table_element(args, block, collection, klass, params)
+  def zable_element(args, block, collection, klass, params)
     cols = columns(&block)
     cols.instance_variable_set :@search_params, controller.request.params[:search]
     cols.instance_variable_set :@_extra_params, params
@@ -32,9 +32,9 @@ module DisplayTableHelper
   end
 
   def columns
-    controller.request.instance_variable_set :@display_table_columns, []
+    controller.request.instance_variable_set :@zable_columns, []
     yield
-    controller.request.instance_variable_get :@display_table_columns
+    controller.request.instance_variable_get :@zable_columns
   end
 
   def sorted_column?(name)
@@ -60,8 +60,8 @@ module DisplayTableHelper
         :sort_order => link_sort_order(name)
     }
 
-    display_table_columns = controller.request.instance_variable_get :@display_table_columns
-    display_table_columns << col
+    zable_columns = controller.request.instance_variable_get :@zable_columns
+    zable_columns << col
   end
 
 end

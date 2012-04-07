@@ -1,8 +1,8 @@
-require 'display_table/display_table_test_helper'
+require 'zable/zable_test_helper'
 
-module DisplayTableTestHelper
+module ZableTestHelper
   def self.included(base)
-    DisplayTableHelper.module_eval do
+    ZableHelper.module_eval do
       def pagination_element(*args)
         ''.html_safe
       end

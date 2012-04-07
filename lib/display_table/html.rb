@@ -1,4 +1,4 @@
-module DisplayTable
+module Zable
   module Html
 
     ## Table header methods
@@ -86,7 +86,7 @@ module DisplayTable
     end
 
     def empty_table_body_row(columns, args)
-      content_tag :tr, :class => 'empty', :id=> "display-table-empty-set" do
+      content_tag :tr, :class => 'empty', :id=> "zable-empty-set" do
         content_tag :td, :colspan => columns.size do
           (args[:empty_message] || "No items found.").html_safe
         end
@@ -132,7 +132,7 @@ module DisplayTable
     end
 
     def body_row_class
-      cycle("odd", "even", name: "display_table_cycle")
+      cycle("odd", "even", name: "zable_cycle")
     end
 
     protected

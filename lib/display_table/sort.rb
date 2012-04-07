@@ -1,4 +1,4 @@
-module DisplayTable
+module Zable
   module Sort
 
     module ActiveRecord
@@ -44,4 +44,4 @@ module DisplayTable
   end
 end
 
-ActiveRecord::Base.send :extend, DisplayTable::Sort::ActiveRecord::ClassMethods
+ActiveRecord::Base.send :extend, Zable::Sort::ActiveRecord::ClassMethods
