@@ -19,7 +19,8 @@ module Zable
 
       def scoped_for_paginate(params, scoped_object)
         page = (PAGE_DEFAULTS.merge(params[:page] || {})).stringify_keys
-        scoped_object.paginate :page => page['num'], :per_page => page['size']
+        scoped_object = scoped_object.paginate(:page => page['num'], :per_page => page['size']) if scoped_object.respond_to?(:paginate)
+        scoped_object
       end
 
       def populate(params={})
