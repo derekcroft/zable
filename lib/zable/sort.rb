@@ -6,7 +6,10 @@ module Zable
       module ClassMethods
         def inherited(subclass)
           subclass.class_eval do
-            scope :for_sort_params, -> sort_params { inject_sort_scope(sort_params) }
+            def self.for_sort_params(sort_params)
+              return self unless sort_params
+              inject_sort_scope(sort_params)
+            end
           end
           super(subclass)
         end
