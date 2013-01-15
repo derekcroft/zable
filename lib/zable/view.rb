@@ -1,7 +1,7 @@
 module Zable
 
   class View
-    #include Zable::Html
+    include Zable::Html
 
     attr_reader :columns
 

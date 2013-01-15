@@ -61,8 +61,8 @@ module Zable
     end
 
     def header_cell_href(attr, columns)
-      search = columns.instance_variable_get :@search_params
-      extra_params = columns.instance_variable_get(:@_extra_params) || {}
+      search = controller.request.params[:search]
+      extra_params = params
       all_params = [sort_params(attr), search_params(search), extra_params.to_query.html_safe].reject(&:blank?).join("&".html_safe)
       current_url << "?".html_safe << all_params
     end
