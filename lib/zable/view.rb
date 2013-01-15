@@ -1,7 +1,7 @@
 module Zable
 
   class View
-    include Zable::Html
+    #include Zable::Html
 
     attr_reader :columns
 
@@ -44,9 +44,9 @@ module Zable
       @template
     end
 
-    def method_missing(method, *args)
+    def method_missing(*args, &block)
       # missing methods will be sent to the view context - these will generally be rails helper methods
-      h.send(method, *args)
+      h.send(*args, &block)
     end
 
     def zable_element
