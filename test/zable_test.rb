@@ -13,6 +13,12 @@ class ZableTest < ActionView::TestCase
     mock_scope
   end
 
+  def create_zable_and_get_column(&block)
+    zable_view = Zable::View.new([], Class, view, &block)
+    zable_view.render
+    zable_view.columns[0]
+  end
+
   ## test that the plugin is loaded properly
   test "modules exist in the current scope" do
     assert_kind_of Module, Zable
@@ -97,57 +103,53 @@ class ZableTest < ActionView::TestCase
 
   # given a block, helper populates columns array
   test "columns populate from block" do
-    col = columns do
+    c = create_zable_and_get_column do
       column :col_1
       column :col_2
     end
-    column = col[0]
-    assert_kind_of Hash, column
-    assert_equal :col_1, column[:name]
+    assert_kind_of Hash, c
+    assert_equal :col_1, c[:name]
   end
 
   test "column stores block value passed to it" do
-    col = columns do |c|
+    c = create_zable_and_get_column do
       column :col_1 do |i|
         i.string_column.upcase + " - extra stuff"
       end
     end
-    column = col[0]
-    assert_kind_of Hash, column
-    assert_equal :col_1, column[:name]
-    assert_kind_of Proc, column[:block]
+    assert_kind_of Hash, c
+    assert_equal :col_1, c[:name]
+    assert_kind_of Proc, c[:block]
   end
 
   test "column stores title passed to it" do
-    col = columns do |c|
+    c = create_zable_and_get_column do
       column :col_1, :title => "Col 1 Title"
     end
-    column = col[0]
-    assert_kind_of Hash, column
-    assert_equal :col_1, column[:name]
-    assert_equal "Col 1 Title", column[:title]
+    assert_kind_of Hash, c
+    assert_equal :col_1, c[:name]
+    assert_equal "Col 1 Title", c[:title]
   end
 
   test "column stores sort value passed to it" do
-    col = columns do |c|
+    c = create_zable_and_get_column do
       column :col_1, :sort => false
     end
-    column = col[0]
-    assert_kind_of Hash, column
-    assert_equal :col_1, column[:name]
-    assert_equal false, column[:sort]
+    assert_kind_of Hash, c
+    assert_equal :col_1, c[:name]
+    assert_equal false, c[:sort]
   end
 
   test "sort value for column defaults to true" do
-    col = columns do |c|
+    c = create_zable_and_get_column do
       column :col_1
     end
-    column = col[0]
-    assert_kind_of Hash, column
-    assert_equal :col_1, column[:name]
-    assert_equal true, column[:sort]
+    assert_kind_of Hash, c
+    assert_equal :col_1, c[:name]
+    assert_equal true, c[:sort]
   end
 
+  # TODO - make this work!
   # helper called with a non-empty collection
   test "main helper method returns an html table" do
     collection = 2.times.collect { FactoryGirl.create :item }
