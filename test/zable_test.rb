@@ -48,7 +48,7 @@ class ZableTest < ActionView::TestCase
 
   test "empty_table_body_row called when collection is empty" do
     collection = []
-    ZableTest.any_instance.expects(:empty_table_body_row)
+    Zable::View.any_instance.expects(:empty_table_body_row)
     zable collection, Item, &@COLUMN_PROC
   end
 
@@ -168,7 +168,7 @@ class ZableTest < ActionView::TestCase
 
   test "header links merge in extra params that are passed" do
     columns = []
-    columns.instance_variable_set(:@_extra_params, {:useful => "stuff", :to_pass => "as params"})
+    stubs(:params).returns({:useful => "stuff", :to_pass => "as params"})
     href = header_cell_href({:name => "awesome", :sort_order => "desc"}, columns)
     assert_match /[\?&]useful=stuff(&|$)/, href
     assert_match /[\?&]to_pass=as\+params(&|$)/, href
