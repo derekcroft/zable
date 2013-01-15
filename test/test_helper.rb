@@ -33,11 +33,11 @@ module TestPatches
       { :name => :integer_column },
       { :name => :string_column_2 }
     ]
-    @COLUMN_PROC = -> {
+    @COLUMN_PROC = Proc.new {
       column :string_column
       column :integer_column
       column :string_column_2 }
-    @COLUMN_PROC_RETURNING_NIL = -> {
+    @COLUMN_PROC_RETURNING_NIL = Proc.new {
       column :string_column
       column :integer_column
       column :string_column_2

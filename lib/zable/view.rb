@@ -58,22 +58,10 @@ module Zable
     def pagination_element
       content_tag :div, :class => 'brownFilterResultsBox' do
         page_entries_info(@collection, @options.slice(:entry_name)) <<
-          will_paginate(@collection, :renderer => LinkWithParamsRenderer.new(@options[:params] || {}))
+          will_paginate(@collection, :renderer => Zable::WillPaginate::LinkWithParamsRenderer.new(@options[:params] || {}))
       end
     end
 
-    def sorted_column?(name)
-      h.params[:sort][:attr] == name.to_s rescue false
-    end
-
-    def current_sort_order
-      h.params[:sort][:order].downcase.to_sym rescue :asc
-    end
-
-    def link_sort_order(name)
-      return nil unless sorted_column?(name)
-      current_sort_order == :desc ? :asc : :desc
-    end
 
   end
 
