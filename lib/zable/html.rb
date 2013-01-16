@@ -27,7 +27,7 @@ module Zable
     end
 
     def header_cell_content(attr, columns)
-      str = link_to_if attr[:sort], header_cell_link_text(attr), header_cell_href(attr, columns)
+      str = link_to_if attr[:sort], header_cell_link_text(attr), header_cell_href(attr)
       str << header_cell_sort_image(attr)
     end
 
@@ -60,10 +60,8 @@ module Zable
       attr[:sort_order] == :desc ? "ascending.gif" : "descending.gif"
     end
 
-    def header_cell_href(attr, columns)
-      search = controller.request.params[:search]
-      extra_params = params
-      all_params = [sort_params(attr), search_params(search), extra_params.to_query.html_safe].reject(&:blank?).join("&".html_safe)
+    def header_cell_href(attr)
+      all_params = [sort_params(attr), search_params(@search), (@_extra_params || {}).to_query.html_safe].reject(&:blank?).join("&".html_safe)
       current_url << "?".html_safe << all_params
     end
 

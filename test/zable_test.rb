@@ -167,9 +167,8 @@ class ZableTest < ActionView::TestCase
   end
 
   test "header links merge in extra params that are passed" do
-    columns = []
-    stubs(:params).returns({:useful => "stuff", :to_pass => "as params"})
-    href = header_cell_href({:name => "awesome", :sort_order => "desc"}, columns)
+    @_extra_params = {:useful => "stuff", :to_pass => "as params"}
+    href = header_cell_href({:name => "awesome", :sort_order => "desc"})
     assert_match /[\?&]useful=stuff(&|$)/, href
     assert_match /[\?&]to_pass=as\+params(&|$)/, href
   end
