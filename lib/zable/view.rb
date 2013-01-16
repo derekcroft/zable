@@ -8,8 +8,12 @@ module Zable
     def initialize(collection, klass, template, options={}, &block)
       @collection = collection
       @klass = klass
+
       @template = template # this refers to the view context
       raise "Must pass in valid view context" unless @template.kind_of? ActionView::Context
+      @search = @template.controller.request.params[:search]
+      @_extra_params = @template.params
+
       @options = options
       @columns = []
       instance_eval(&block)
