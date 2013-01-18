@@ -1,20 +1,24 @@
+# Zable
+
+Zable lets you easily build sortable and searchable tables of your active record objects.
+
 ## Example
 
 ```ruby
-# item.rb
+# user.rb
 
-# basic sortable behavior
-sortable :name, :color
+# basic sortable behavior on attribute
+sortable :name, :email, :created_at
 
-# nontrivial sort by association
-scope :sort_owner_name, -> criteria { includes(:owner).order("owner.name #{criteria[:order]}") }
+# sort on a non-attribute
+scope :sort_age, -> criteria { includes(:profile).order("profile.age #{criteria[:order]}") }
 ```
 
 ```ruby
-# items_controller.rb
+# users_controller.rb
 
 def index
-  @items = Item.populate(params)
+  @users = User.populate(params)
 end
 ```
 
@@ -22,10 +26,12 @@ end
 # index.html.erb
 
 <%= 
-  zable @items, Item, :table_class => ["items-table", "shiny-colorful-table"] do
+  zable @items, Item, :table_class => ["users-table", "shiny-colorful-table"] do
     column(:name)
-    column(:color)
-    column(:owner_name) { |item| item.owner.name }
+    column(:email)
+    column(:created_at, :title => "Join Date")
+    column(:age) {|user| user.profile.age}
+    column(:edit, :title => "") {|user| link_to "Edit", edit_user_path(user)}
   end
 %>
 ```
