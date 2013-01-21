@@ -25,7 +25,7 @@ column(attribute, options={}, &block)
 # example
 zable @items, Item do
   column :column_1
-  column :column_2, {|item| item.to_s}
+  column :column_2 {|item| item.to_s}
 end
 ```
 
