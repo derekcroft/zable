@@ -27,7 +27,7 @@ module Zable
     end
 
     def header_cell_content(attr, columns)
-      if attr[:title] && attr[:title].instance_of?(Proc)
+      if attr[:title] && attr[:title].respond_to?(:call)
         attr[:title].call
       else
         str = link_to_if attr[:sort], header_cell_link_text(attr), header_cell_href(attr)
