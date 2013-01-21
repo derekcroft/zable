@@ -146,10 +146,8 @@ module Zable
       val.to_s.demodulize.underscore
     end
 
-    def tag_args(args)
-      tag_args = {}
-      tag_args[:class] = args[:table_class].join(" ".html_safe) if args[:table_class] and !args[:table_class].empty?
-      tag_args
+    def tag_args(options)
+      {class: options[:class], id: options[:id]}
     end
 
   end

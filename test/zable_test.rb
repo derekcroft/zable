@@ -160,10 +160,17 @@ class ZableTest < ActionView::TestCase
   test "html table can have additional classes" do
     collection    = 2.times.collect { FactoryGirl.create :item }
     table_classes = ["wmg-result-list", "hrca-table"]
-    html          = zable collection, Item, :table_class => table_classes, &@COLUMN_PROC
+    html          = zable collection, Item, :class => table_classes.join(' '), &@COLUMN_PROC
     table_classes.each do |tc|
       assert_match /<table.+class=['"].*#{tc}.*['"]>.*<\/table>/, html
     end
+  end
+
+  test "html table can have a custom id" do
+    collection    = 2.times.collect { FactoryGirl.create :item }
+    id            = "my_zable_table"
+    html          = zable collection, Item, :id => id, &@COLUMN_PROC
+    assert_match /<table.+id=['"].*#{id}.*['"]>.*<\/table>/, html
   end
 
   test "header links merge in extra params that are passed" do
