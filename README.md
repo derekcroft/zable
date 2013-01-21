@@ -15,6 +15,8 @@ end
 * **collection** - (Array) An array of active_record objects
 * **klass** - (Class) Class of the acive_record objects in the collection. This is needed for the case when collection is empty.
 * **options** - (Hash)
+  * **:class** - (String) Html class
+  * **:id** - (String) Html id
 
 Within the zable block, you can use the `column` method to define the columns of your table.
 
@@ -37,9 +39,8 @@ end
 
 ## Example
 
+user.rb:
 ```ruby
-# user.rb
-
 # basic sortable behavior on attribute
 sortable :name, :email, :created_at
 
@@ -47,17 +48,15 @@ sortable :name, :email, :created_at
 scope :sort_age, -> criteria { includes(:profile).order("profile.age #{criteria[:order]}") }
 ```
 
+users_controller.rb:
 ```ruby
-# users_controller.rb
-
 def index
   @users = User.populate(params)
 end
 ```
 
-```ruby
-# index.html.erb
-
+index.html.erb:
+```erb
 <%= 
   zable @items, Item, :table_class => ["users-table", "shiny-colorful-table"] do
     column(:name)
