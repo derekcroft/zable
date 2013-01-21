@@ -27,8 +27,12 @@ module Zable
     end
 
     def header_cell_content(attr, columns)
-      str = link_to_if attr[:sort], header_cell_link_text(attr), header_cell_href(attr)
-      str << header_cell_sort_image(attr)
+      if attr[:title] && attr[:title].instance_of?(Proc)
+        attr[:title].call
+      else
+        str = link_to_if attr[:sort], header_cell_link_text(attr), header_cell_href(attr)
+        str << header_cell_sort_image(attr)
+      end
     end
 
     def header_cell_id(klass, attr)

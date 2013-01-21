@@ -24,6 +24,15 @@ class ColumnsTest < ActionView::TestCase
     assert_header_cell_regex_match "item_integer_column", "Overridden Integer", t
   end
 
+  test "header cells with custom content" do
+    collection = 2.times.collect { FactoryGirl.create :item }
+    t = zable collection, Item do
+      column :string_column, :title => -> { link_to "Home", "/" }
+    end
+    assert_no_match header_cell_with_sort_regex("item_string_column", "String Column", "string_column"), t, false
+    assert_match /<a href="\/">Home<\/a>/, t
+  end
+
   test "header cell links to same page with sort parameters" do
     collection = 2.times.collect { FactoryGirl.create :item }
     t = zable collection, Item do
