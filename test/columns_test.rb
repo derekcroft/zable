@@ -61,19 +61,13 @@ class ColumnsTest < ActionView::TestCase
 
   ## test individual methods
   test "header row has a cell for each column specified" do
-    assert_header_cell_match { table_header_cells Item, @COLUMNS }
+    assert_header_cell_match { table_header_cells @COLUMNS }
   end
 
   test "header cells appear in the order specified" do
-    th = table_header_cells Item, @COLUMNS
+    th = table_header_cells @COLUMNS
     cell_ids = th.scan(/<th[^<]data-column=['"]([^<]+)['"]>/).flatten.collect(&:underscore).collect(&:to_sym)
     assert_equal cell_ids, @COLUMNS.collect { |c| c[:name] }.collect(&:to_sym)
-  end
-
-  test "header cell ids are formatted like model_attribute" do
-    col = {:name => "some_attribute"}
-    id  = header_cell_id(Item, col)
-    assert_match /item_some_attribute/, id
   end
 
   test "header cell titles default to titleized column name if not overridden" do
@@ -97,7 +91,7 @@ class ColumnsTest < ActionView::TestCase
   end
 
   def assert_header_cell_title(name, id, text)
-    th = table_header_cell Item, {:name => name}, @COLUMNS
+    th = table_header_cell({:name => name}, @COLUMNS)
     assert_header_cell_regex_match id, text, th
   end
 

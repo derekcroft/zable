@@ -54,7 +54,7 @@ module Zable
 
     def zable_element
       content_tag(:table, tag_args(@options)) do
-        table_header(@klass, @columns) << table_body(@collection, @columns, @options)
+        table_header(@columns) << table_body(@collection, @columns, @options)
       end
     end
 
