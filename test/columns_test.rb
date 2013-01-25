@@ -6,7 +6,7 @@ class ColumnsTest < ActionView::TestCase
   test "table has the expected headers" do
     collection = 2.times.collect { FactoryGirl.create :item }
     assert_header_cell_match {
-      zable collection, Item do
+      zable collection do
         column :string_column
         column :integer_column
         column :string_column_2
@@ -16,36 +16,36 @@ class ColumnsTest < ActionView::TestCase
 
   test "header cells title properly" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    t = zable collection, Item do
+    t = zable collection do
       column :string_column
       column :integer_column, :title => "Overridden Integer"
     end
-    assert_header_cell_regex_match "item_string_column", "String Column", t
-    assert_header_cell_regex_match "item_integer_column", "Overridden Integer", t
+    assert_header_cell_regex_match "string_column", "String Column", t
+    assert_header_cell_regex_match "integer_column", "Overridden Integer", t
   end
 
   test "header cells with custom content" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    t = zable collection, Item do
+    t = zable collection do
       column :string_column, :title => -> { link_to "Home", "/" }
     end
-    assert_no_match header_cell_with_sort_regex("item_string_column", "String Column", "string_column"), t, false
+    assert_no_match header_cell_with_sort_regex("string_column", "String Column", "string_column"), t, false
     assert_match /<a href="\/">Home<\/a>/, t
   end
 
   test "header cell links to same page with sort parameters" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    t = zable collection, Item do
+    t = zable collection do
       column :string_column
       column :integer_column
     end
-    assert_match header_cell_with_sort_regex("item_string_column", "String Column", "string_column"), t
-    assert_match header_cell_with_sort_regex("item_integer_column", "Integer Column", "integer_column"), t
+    assert_match header_cell_with_sort_regex("string_column", "String Column", "string_column"), t
+    assert_match header_cell_with_sort_regex("integer_column", "Integer Column", "integer_column"), t
   end
 
   test "header call with false sort does not contain a link" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    t = zable collection, Item do
+    t = zable collection do
       column :integer_column, :sort => false
     end
     assert_no_match /<a href/, t, false
@@ -53,7 +53,7 @@ class ColumnsTest < ActionView::TestCase
 
   test "header call with false sort and title does not contain a link" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    t = zable collection, Item do
+    t = zable collection do
       column :integer_column, :title => "Integer Column Header", :sort => false
     end
     assert_no_match /<a href/, t, false
@@ -61,23 +61,17 @@ class ColumnsTest < ActionView::TestCase
 
   ## test individual methods
   test "header row has a cell for each column specified" do
-    assert_header_cell_match { table_header_cells Item, @COLUMNS }
+    assert_header_cell_match { table_header_cells @COLUMNS }
   end
 
   test "header cells appear in the order specified" do
-    th = table_header_cells Item, @COLUMNS
-    cell_ids = th.scan(/<th[^<]id=['"]item_([^<]+)['"]>/).flatten.collect(&:underscore).collect(&:to_sym)
+    th = table_header_cells @COLUMNS
+    cell_ids = th.scan(/<th[^<]data-column=['"]([^<]+)['"]>/).flatten.collect(&:underscore).collect(&:to_sym)
     assert_equal cell_ids, @COLUMNS.collect { |c| c[:name] }.collect(&:to_sym)
   end
 
-  test "header cell ids are formatted like model_attribute" do
-    col = {:name => "some_attribute"}
-    id  = header_cell_id(Item, col)
-    assert_match /item_some_attribute/, id
-  end
-
   test "header cell titles default to titleized column name if not overridden" do
-    assert_header_cell_title :integer_column, "item_integer_column", "Integer Column"
+    assert_header_cell_title :integer_column, "integer_column", "Integer Column"
   end
 
   test "header cell titles use name attribute if present" do
@@ -88,7 +82,7 @@ class ColumnsTest < ActionView::TestCase
   def assert_header_cell_match
     th = yield
     @COLUMNS.each do |ac|
-      assert_match /<th[^>]+id=\"item_#{ac[:name].to_s}\">/, th
+      assert_match /<th[^>]+data-column=\"#{ac[:name].to_s}\">/, th
     end
   end
 
@@ -97,13 +91,13 @@ class ColumnsTest < ActionView::TestCase
   end
 
   def assert_header_cell_title(name, id, text)
-    th = table_header_cell Item, {:name => name}, @COLUMNS
+    th = table_header_cell({:name => name}, @COLUMNS)
     assert_header_cell_regex_match id, text, th
   end
 
   private
   def regex_prefix(id)
-    "<th[^>]+id=\"#{id}\">[^<]*"
+    "<th[^>]+data-column=\"#{id}\">[^<]*"
   end
 
   def regex_suffix(text)

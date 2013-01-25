@@ -4,7 +4,7 @@ class ZableTest < ActionView::TestCase
 
   ## Test helpers for this gem
   def assert_html_table(collection)
-    assert_match /<table.*>.*<\/table>/, zable(collection, Item, &@COLUMN_PROC)
+    assert_match /<table.*>.*<\/table>/, zable(collection, &@COLUMN_PROC)
   end
 
   def null_object
@@ -14,7 +14,7 @@ class ZableTest < ActionView::TestCase
   end
 
   def create_zable_and_get_column(&block)
-    zable_view = Zable::View.new([], Class, view, &block)
+    zable_view = Zable::View.new([], view, &block)
     zable_view.render
     zable_view.columns[0]
   end
@@ -34,7 +34,7 @@ class ZableTest < ActionView::TestCase
   ## test overall functionality of plugin
   test "helper method can be called with an empty collection" do
     collection = []
-    assert_nothing_raised { zable collection, Item, &@COLUMN_PROC }
+    assert_nothing_raised { zable collection, &@COLUMN_PROC }
   end
 
   # this is important if you want to have columns hidden based on a condition:
@@ -43,13 +43,13 @@ class ZableTest < ActionView::TestCase
   # end
   test "helper method can be called with a block that returns nil" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    assert_nothing_raised { zable collection, Item, &@COLUMN_PROC_RETURNING_NIL }
+    assert_nothing_raised { zable collection, &@COLUMN_PROC_RETURNING_NIL }
   end
 
   test "empty_table_body_row called when collection is empty" do
     collection = []
     Zable::View.any_instance.expects(:empty_table_body_row)
-    zable collection, Item, &@COLUMN_PROC
+    zable collection, &@COLUMN_PROC
   end
 
   test "empty table body row creates a tr with a td" do
@@ -160,7 +160,7 @@ class ZableTest < ActionView::TestCase
   test "html table can have additional classes" do
     collection    = 2.times.collect { FactoryGirl.create :item }
     table_classes = ["wmg-result-list", "hrca-table"]
-    html          = zable collection, Item, :class => table_classes.join(' '), &@COLUMN_PROC
+    html          = zable collection, :class => table_classes.join(' '), &@COLUMN_PROC
     table_classes.each do |tc|
       assert_match /<table.+class=['"].*#{tc}.*['"]>.*<\/table>/, html
     end
@@ -169,7 +169,7 @@ class ZableTest < ActionView::TestCase
   test "html table can have a custom id" do
     collection    = 2.times.collect { FactoryGirl.create :item }
     id            = "my_zable_table"
-    html          = zable collection, Item, :id => id, &@COLUMN_PROC
+    html          = zable collection, :id => id, &@COLUMN_PROC
     assert_match /<table.+id=['"].*#{id}.*['"]>.*<\/table>/, html
   end
 
@@ -184,7 +184,7 @@ class ZableTest < ActionView::TestCase
     collection = 2.times.map { FactoryGirl.create :item }
     expects(:page_entries_info).twice.with(collection, {:entry_name => 'dealy'}).returns("")
     stubs :will_paginate => ""
-    zable(collection, Item, :paginate => true, :entry_name => 'dealy', &@COLUMN_PROC)
+    zable(collection, :paginate => true, :entry_name => 'dealy', &@COLUMN_PROC)
   end
 
   test "zable passes params on to the pagination links" do
@@ -192,13 +192,13 @@ class ZableTest < ActionView::TestCase
     collection = 2.times.collect { FactoryGirl.create :item }
     WillPaginate::LinkWithParamsRenderer.expects(:new).with(params).at_least_once
     self.stubs(:page_entries_info => "", :will_paginate => "")
-    zable(collection, Item, :paginate => true, :params => params, &@COLUMN_PROC)
+    zable(collection, :paginate => true, :params => params, &@COLUMN_PROC)
   end
 
   test "zable can append a string before the closing tbody tag" do
     collection = 2.times.collect { FactoryGirl.create :item }
     appended = "<tr><td>Appended!</td></tr>"
-    html = zable(collection, Item, :append => appended.html_safe, &@COLUMN_PROC)
+    html = zable(collection, :append => appended.html_safe, &@COLUMN_PROC)
     assert_match /#{appended}\s*<\/tbody>/, html
   end
 

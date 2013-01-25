@@ -5,8 +5,8 @@ module ZableHelper
     base.send :include, Zable::Html
   end
 
-  def zable(collection, klass, args={}, &block)
-    table = Zable::View.new(collection, klass, self, args, &block)
+  def zable(collection, args={}, &block)
+    table = Zable::View.new(collection, self, args, &block)
     table.render
   end
 
