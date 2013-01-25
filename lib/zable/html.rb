@@ -21,7 +21,7 @@ module Zable
     end
 
     def table_header_cell(klass, attr, columns)
-      content_tag :th, :id => header_cell_id(klass, attr) do
+      content_tag :th, :data => {:column => idify(attr[:name])} do
         header_cell_content(attr, columns)
       end
     end

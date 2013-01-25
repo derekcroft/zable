@@ -5,9 +5,8 @@ module Zable
 
     attr_reader :columns
 
-    def initialize(collection, klass, template, options={}, &block)
+    def initialize(collection, template, options={}, &block)
       @collection = collection
-      @klass = klass
 
       @template = template # this refers to the view context
       raise "Must pass in valid view context" unless @template.kind_of? ActionView::Context

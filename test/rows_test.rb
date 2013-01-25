@@ -11,12 +11,12 @@ class RowsTest < ActionView::TestCase
 
   test "html table body has a row for each element in the collection" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    assert_body_rows(collection) { zable collection, Item, &@COLUMN_PROC }
+    assert_body_rows(collection) { zable collection, &@COLUMN_PROC }
   end
 
   test "table rows alternate odd and even" do
     collection = 3.times.collect { FactoryGirl.create :item }
-    html       = zable collection, Item, &@COLUMN_PROC
+    html       = zable collection, &@COLUMN_PROC
     html.scan(/<tr[^>]+class="([^"])"/).flatten.each_with_index do |c, i|
       assert_equal c, i.odd? ? "odd" : "even"
     end
@@ -24,7 +24,7 @@ class RowsTest < ActionView::TestCase
 
   test "helper returns a body cell for each attribute" do
     collection = 2.times.collect { FactoryGirl.create :item }
-    html = zable collection, Item, &@COLUMN_PROC
+    html = zable collection, &@COLUMN_PROC
     @COLUMNS.each do |c|
       assert_match /<tr[^<]*>.*<td[^>]+id=\"item_\d+_#{idify c[:name]}\">.*<\/td>.*<\/tr>/, html
     end
