@@ -7,13 +7,12 @@ Zable lets you easily build sortable and searchable tables of your active record
 The zable helper method will render the actual table in your view.
 
 ```ruby
-zable collection, klass, options = {} do
+zable collection, options = {} do
   # define columns
 end
 ```
 
 * **collection** - (Array) An array of active_record objects
-* **klass** - (Class) Class of the acive_record objects in the collection. This is needed for the case when collection is empty.
 * **options** - (Hash)
   * **:class** - (String) Html class
   * **:id** - (String) Html id
@@ -25,7 +24,7 @@ column(attribute, options={})
 column(attribute, options={}, &block)
 
 # example
-zable @items, Item do
+zable @items do
   column :column_1
   column :column_2 {|item| item.to_s}
 end
@@ -58,7 +57,7 @@ end
 index.html.erb:
 ```erb
 <%= 
-  zable @items, Item, :table_class => ["users-table", "shiny-colorful-table"] do
+  zable @items, :table_class => ["users-table", "shiny-colorful-table"] do
     column(:name)
     column(:email)
     column(:created_at, :title => "Join Date")
