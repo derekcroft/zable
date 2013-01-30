@@ -67,7 +67,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   test "column headers are links to sort by that column" do
     get "/items"
     assert_response :success
-    assert_select "table th#item_string_column a"
+    assert_select "table th[data-column=string_column] a"
   end
 
   test "column header sorts by opposite direction when clicked" do
@@ -77,22 +77,22 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   end
 
   test "column header arrow points down when column is sorted ascending" do
-    get "/items", :sort => { :attr => "integer_column", :order => "asc" }
-    assert_select "table th#item_integer_column img" do |elem|
+    get "/items", :sort => { :attr => "integer_column_2", :order => "asc" }
+    assert_select "table th[data-column=integer_column_2] img" do |elem|
       assert_match /src=\".*ascending.*\"/, elem[0].to_s
     end
   end
 
   test "column header arrow points up when column is sorted descending" do
-    get "/items", :sort => { :attr => "integer_column", :order => "desc" }
-    assert_select "table th#item_integer_column img" do |elem|
+    get "/items", :sort => { :attr => "integer_column_2", :order => "desc" }
+    assert_select "table th[data-column=integer_column_2] img" do |elem|
       assert_match /src=\".*descending.*\"/, elem[0].to_s
     end
   end
 
   test "no column header arrow when column is not sorted" do
-    get "/items", :sort => { :attr => "integer_column_2", :order => "desc" }
-    assert_select "table th#item_integer_column img", false
+    get "/items", :sort => { :attr => "integer_column", :order => "desc" }
+    assert_select "table th[data-column=integer_column_2] img", false
   end
 
   # State change cases
@@ -104,7 +104,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
         :sort => { :attr => "integer_column", :order => "desc" },
         :search => { :integer_column => '3' }
     assert_response :success
-    assert_select "table th#item_integer_column a" do |elem|
+    assert_select "table th[data-column=integer_column_2] a" do |elem|
       elem.each do |e|
         assert_match /href="[^>]*search\[integer_column\]=3[^>]*"/, e.to_s
       end

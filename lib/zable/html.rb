@@ -2,26 +2,26 @@ module Zable
   module Html
 
     ## Table header methods
-    def table_header(klass, columns)
+    def table_header(columns)
       content_tag :thead do
-        table_header_row(klass, columns)
+        table_header_row(columns)
       end
     end
 
-    def table_header_row(klass, columns)
+    def table_header_row(columns)
       content_tag :tr do
-        table_header_cells(klass, columns)
+        table_header_cells(columns)
       end
     end
 
-    def table_header_cells(klass, columns)
+    def table_header_cells(columns)
       columns.inject("".html_safe) do |str, attr|
-        str << table_header_cell(klass, attr, columns)
+        str << table_header_cell(attr, columns)
       end
     end
 
-    def table_header_cell(klass, attr, columns)
-      content_tag :th, :id => header_cell_id(klass, attr) do
+    def table_header_cell(attr, columns)
+      content_tag :th, :data => {:column => idify(attr[:name])} do
         header_cell_content(attr, columns)
       end
     end
@@ -33,10 +33,6 @@ module Zable
         str = link_to_if attr[:sort], header_cell_link_text(attr), header_cell_href(attr)
         str << header_cell_sort_image(attr)
       end
-    end
-
-    def header_cell_id(klass, attr)
-      "#{idify klass.name}_#{idify attr[:name]}".html_safe
     end
 
     def current_url
