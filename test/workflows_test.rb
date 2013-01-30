@@ -2,6 +2,8 @@ require_relative 'test_helper'
 
 include ZableHelper
 
+require 'will_paginate/view_helpers'
+
 class WorkflowsTest < ActionDispatch::IntegrationTest
 
   setup do
@@ -38,6 +40,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
 
   # Standard behavior
   test "specifying a page number and size to index request" do
+    LinkWithParamsRenderer.any_instance.stubs(:to_html).returns('')
     get "/items", :page => { :num => 2, :size => 2 }
     assert_equal assigns[:items], @items[2..3]
   end
@@ -54,6 +57,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   end
 
   test "paging without a page number defaults to page 1" do
+    LinkWithParamsRenderer.any_instance.stubs(:to_html).returns('')
     get "/items", :page => { :size => 2 }
     assert_equal assigns[:items], @items[0..1]
   end
