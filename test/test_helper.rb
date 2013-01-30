@@ -60,3 +60,15 @@ module TestPatches
 end
 
 ActionView::TestCase.send(:include, TestPatches)
+
+
+
+# HELPERS
+
+def click_link(selector)
+  links = css_select(selector)
+  link = links.first
+  href_match = link.to_s.match(/href=['|"]([^'"]*)['|"]/)
+  href = href_match[1]
+  get href
+end

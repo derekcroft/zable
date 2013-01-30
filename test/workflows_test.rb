@@ -71,7 +71,9 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   end
 
   test "column header sorts by opposite direction when clicked" do
-    
+    get "/items", :sort => { :attr => "integer_column", :order => "asc" }
+    click_link("#item_integer_column a")
+    assert_equal assigns[:items].collect(&:integer_column), @items.reverse.collect(&:integer_column)
   end
 
   test "column header arrow points down when column is sorted ascending" do

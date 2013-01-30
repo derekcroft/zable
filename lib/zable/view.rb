@@ -12,7 +12,7 @@ module Zable
       @template = template # this refers to the view context
       raise "Must pass in valid view context" unless @template.kind_of? ActionView::Context
       @search = @template.controller.request.params[:search]
-      @_extra_params = @template.params
+      @_extra_params = options[:params]
 
       @options = options
       @columns = []
