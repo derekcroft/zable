@@ -73,7 +73,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   test "column header sorts by opposite direction when clicked" do
     get "/items", :sort => { :attr => "integer_column", :order => "asc" }
     click_link("table th[data-column=integer_column] a")
-    assert_equal assigns[:items].collect(&:integer_column), @items.reverse.collect(&:integer_column)
+    assert_equal assigns[:items], @items.reverse
   end
 
   test "column header arrow points down when column is sorted ascending" do
@@ -103,12 +103,8 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     get "/items",
         :sort => { :attr => "integer_column", :order => "desc" },
         :search => { :integer_column => '3' }
-    assert_response :success
-    assert_select "table th[data-column=integer_column_2] a" do |elem|
-      elem.each do |e|
-        assert_match /href="[^>]*search\[integer_column\]=3[^>]*"/, e.to_s
-      end
-    end
+    click_link("table th[data-column=integer_column_2] a")
+    assert_equal @controller.params[:search][:integer_column], '3'
   end
 
   test "page 1 is returned when sort order or column is changed" do
