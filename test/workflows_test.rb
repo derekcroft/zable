@@ -72,7 +72,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
 
   test "column header sorts by opposite direction when clicked" do
     get "/items", :sort => { :attr => "integer_column", :order => "asc" }
-    click_link("#item_integer_column a")
+    click_link("table th[data-column=integer_column] a")
     assert_equal assigns[:items].collect(&:integer_column), @items.reverse.collect(&:integer_column)
   end
 

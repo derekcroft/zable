@@ -2,3 +2,4 @@
 *.log
 *.lock
 *.sqlite3
+.DS_Store

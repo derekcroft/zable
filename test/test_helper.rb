@@ -67,8 +67,10 @@ ActionView::TestCase.send(:include, TestPatches)
 
 def click_link(selector)
   links = css_select(selector)
+  raise Test::Unit::AssertionFailedError.new("No link with selector \"#{selector}\" found.") if links.empty?
   link = links.first
   href_match = link.to_s.match(/href=['|"]([^'"]*)['|"]/)
+  raise Test::Unit::AssertionFailedError.new("Link with selector \"#{selector}\" has no href attribute.") if href_match.nil?
   href = href_match[1]
   get href
 end
