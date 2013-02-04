@@ -11,7 +11,7 @@ module Zable
       @template = template # this refers to the view context
       raise "Must pass in valid view context" unless @template.kind_of? ActionView::Context
       @search = @template.controller.request.params[:search]
-      @_extra_params = options[:params]
+      @_extra_params = options[:params] || {}
 
       @options = options
       @columns = []
@@ -61,7 +61,7 @@ module Zable
     def pagination_element
       content_tag :div, :class => 'brownFilterResultsBox' do
         page_entries_info(@collection, @options.slice(:entry_name)) <<
-          will_paginate(@collection, :renderer => Zable::WillPaginate::LinkWithParamsRenderer.new(@options[:params] || {}))
+          will_paginate(@collection, :renderer => Zable::WillPaginate::LinkWithParamsRenderer.new(self, @options[:params]))
       end
     end
 

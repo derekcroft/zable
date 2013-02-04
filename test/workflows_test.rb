@@ -35,6 +35,10 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     order.map {|pos| @items[pos]}
   end
 
+  def click_header_link(attr)
+    click_link("table th[data-column=#{attr}] a")
+  end
+
 
   ## Pagination tests
 
@@ -52,6 +56,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
   end
 
   test "sorting without a sort order defaults to ascending" do
+    Item.per_page = 100
     get "/items", :sort => { :attr => "integer_column_2" }
     assert_equal assigns[:items], items_in_order([1,0,3,2,4])
   end
@@ -60,11 +65,6 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     LinkWithParamsRenderer.any_instance.stubs(:to_html).returns('')
     get "/items", :page => { :size => 2 }
     assert_equal assigns[:items], @items[0..1]
-  end
-
-  test "paging without a page size defaults to 30" do
-    get "/items", :page => { :num => 2 }
-    assert_equal assigns[:items], []
   end
 
   ## Link cases
@@ -76,7 +76,7 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
 
   test "column header sorts by opposite direction when clicked" do
     get "/items", :sort => { :attr => "integer_column", :order => "asc" }
-    click_link("table th[data-column=integer_column] a")
+    click_header_link("integer_column")
     assert_equal assigns[:items], @items.reverse
   end
 
@@ -99,19 +99,42 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     assert_select "table th[data-column=integer_column_2] img", false
   end
 
+  test "next page link takes you to the next page" do
+    get "/items", :page => { :num => 1, :size => 2 }
+    click_link("a.next_page")
+    assert_equal @controller.params[:page][:num], '2'
+  end
+
+  test "previous page link takes you to the previous page" do
+    get "/items", :page => { :num => 3, :size => 2 }
+    click_link("a.previous_page")
+    assert_equal @controller.params[:page][:num], '2'
+  end
+
   # State change cases
   test "sort order and column are preserved when going to another paginated page" do
+    get "/items",
+        :sort => { :attr => "integer_column_2", :order => "desc" },
+        :page => { :num => 1, :size => 2 }
+    click_link("a.next_page")
+    assert @controller.params[:sort].present?
+    assert_equal @controller.params[:sort][:attr], "integer_column_2"
   end
 
   test "search params are preserved when sorting on a column" do
     get "/items",
         :sort => { :attr => "integer_column", :order => "desc" },
         :search => { :integer_column => '3' }
-    click_link("table th[data-column=integer_column_2] a")
+    click_header_link("integer_column_2")
     assert_equal @controller.params[:search][:integer_column], '3'
   end
 
   test "page 1 is returned when sort order or column is changed" do
+    Item.per_page = 2
+    get "/items",
+        :page => { :num => 2 }
+    click_header_link("integer_column_2")
+    assert_equal assigns[:items].collect(&:integer_column_2), items_in_order([1,0]).collect(&:integer_column_2)
   end
 
   # Edge cases
