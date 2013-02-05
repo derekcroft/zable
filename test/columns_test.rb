@@ -2,6 +2,11 @@ require_relative 'test_helper'
 
 class ColumnsTest < ActionView::TestCase
 
+  def setup
+    @_extra_params = {}
+    super
+  end
+
   ## test the helper method
   test "table has the expected headers" do
     collection = 2.times.collect { FactoryGirl.create :item }
@@ -91,7 +96,6 @@ class ColumnsTest < ActionView::TestCase
   end
 
   def assert_header_cell_title(name, id, text)
-    @_extra_params = {}
     th = table_header_cell({:name => name}, @COLUMNS)
     assert_header_cell_regex_match id, text, th
   end
