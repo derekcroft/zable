@@ -50,8 +50,17 @@ module Zable
       params.join("&".html_safe)
     end
 
-    def search_params(params)
-      params.to_a.collect do |param|
+    def current_sort_params
+      p = []
+      if params[:sort].present?
+        p << param(:sort, "attr", params[:sort][:attr])
+        p << param(:sort, "order", params[:sort][:order]) if params[:sort][:order].present?
+      end
+      p.join("&".html_safe)
+    end
+
+    def search_params
+      @search.to_a.collect do |param|
         param(:search, param.first, param.second)
       end.join("&".html_safe)
     end
@@ -61,8 +70,8 @@ module Zable
     end
 
     def header_cell_href(attr)
-      all_params = [sort_params(attr), search_params(@search), (@_extra_params || {}).to_query.html_safe].reject(&:blank?).join("&".html_safe)
-      current_url << "?".html_safe << all_params
+      params = [sort_params(attr), search_params, @_extra_params.to_query.html_safe].reject(&:blank?).join("&".html_safe)
+      current_url << "?".html_safe << params
     end
 
     def header_cell_link_text(attr)

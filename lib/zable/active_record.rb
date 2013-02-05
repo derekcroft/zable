@@ -3,7 +3,7 @@ module Zable
   module ActiveRecord
 
     module ClassMethods
-      PAGE_DEFAULTS = { 'num' => 1, 'size' => 200 }
+      PAGE_DEFAULTS = { 'num' => 1 }
 
       def scoped_for_sort(params, scoped_object)
         hash = (params[:sort] || {}).stringify_keys
