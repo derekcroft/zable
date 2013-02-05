@@ -2,6 +2,11 @@ require_relative 'test_helper'
 
 class ColumnsTest < ActionView::TestCase
 
+  def setup
+    @_extra_params = {}
+    super
+  end
+
   ## test the helper method
   test "table has the expected headers" do
     collection = 2.times.collect { FactoryGirl.create :item }
