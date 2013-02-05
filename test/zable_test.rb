@@ -187,12 +187,14 @@ class ZableTest < ActionView::TestCase
     zable(collection, :paginate => true, :entry_name => 'dealy', &@COLUMN_PROC)
   end
 
-  test "zable passes params on to the pagination links" do
-    params = {:awesome => :tastic}
-    collection = 2.times.collect { FactoryGirl.create :item }
-    WillPaginate::LinkWithParamsRenderer.expects(:new).with(params).at_least_once
-    self.stubs(:page_entries_info => "", :will_paginate => "")
-    zable(collection, :paginate => true, :params => params, &@COLUMN_PROC)
+  test "pagination links merge in extra params that are passed" do
+    extra_params = {:useful => "stuff", :to_pass => "as params"}
+    collection = FactoryGirl.create_list :item, 2
+    zable_view = Zable::View.new(collection, view, {:paginate => true, :params => extra_params}, &@COLUMN_PROC)
+    renderer = Zable::WillPaginate::LinkWithParamsRenderer.new(zable_view, extra_params)
+    url = renderer.url(2)
+    assert_match /[\?&]useful=stuff(&|$)/, url
+    assert_match /[\?&]to_pass=as\+params(&|$)/, url
   end
 
   test "zable can append a string before the closing tbody tag" do

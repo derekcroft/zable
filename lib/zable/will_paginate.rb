@@ -11,7 +11,7 @@ module Zable
 
       def url(page)
         page_param = @zable_view.param(:page, :num, page)
-        all_params = [page_param, @zable_view.current_sort_params, @zable_view.search_params].reject(&:blank?).join("&".html_safe)
+        all_params = [page_param, @zable_view.current_sort_params, @zable_view.search_params, @params.to_query.html_safe].reject(&:blank?).join("&".html_safe)
         @zable_view.current_url << "?".html_safe << all_params
       end
 

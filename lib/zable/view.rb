@@ -61,7 +61,7 @@ module Zable
     def pagination_element
       content_tag :div, :class => 'brownFilterResultsBox' do
         page_entries_info(@collection, @options.slice(:entry_name)) <<
-          will_paginate(@collection, :renderer => Zable::WillPaginate::LinkWithParamsRenderer.new(self, @options[:params]))
+          will_paginate(@collection, :renderer => Zable::WillPaginate::LinkWithParamsRenderer.new(self, @_extra_params))
       end
     end
 
