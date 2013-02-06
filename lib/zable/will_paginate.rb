@@ -10,9 +10,8 @@ module Zable
       end
 
       def url(page)
-        page_param = @zable_view.param(:page, :num, page)
-        all_params = [page_param, @zable_view.current_sort_params, @zable_view.search_params, @params.to_query.html_safe].reject(&:blank?).join("&".html_safe)
-        @zable_view.current_url << "?".html_safe << all_params
+        page_params = {:page => {:num => page}}
+        @zable_view.current_path_with_params(page_params, @zable_view.params.slice(:search, :sort), @params)
       end
 
     protected

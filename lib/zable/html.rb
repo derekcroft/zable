@@ -41,6 +41,7 @@ module Zable
 
     def current_path_with_params(*param_array)
       all_params = param_array.reject(&:blank?).map {|p| p.to_query.html_safe}.join("&".html_safe)
+      all_params = all_params.sub("%5B", "[").sub("%5D", "]")
       current_url << "?".html_safe << all_params
     end
 
@@ -49,25 +50,9 @@ module Zable
     end
 
     def sort_params(attr)
-      params = []
-      params << param(:sort, "attr", attr[:name])
-      params << param(:sort, "order", attr[:sort_order]) if attr[:sorted?]
-      params.join("&".html_safe)
-    end
-
-    def current_sort_params
-      p = []
-      if params[:sort].present?
-        p << param(:sort, "attr", params[:sort][:attr])
-        p << param(:sort, "order", params[:sort][:order]) if params[:sort][:order].present?
-      end
-      p.join("&".html_safe)
-    end
-
-    def search_params
-      @search.to_a.collect do |param|
-        param(:search, param.first, param.second)
-      end.join("&".html_safe)
+      params = { :sort => {:attr => attr[:name]} }
+      params[:sort][:order] = attr[:sort_order] if attr[:sorted?]
+      params
     end
 
     def sort_arrow_image_file(attr)
@@ -75,8 +60,7 @@ module Zable
     end
 
     def header_cell_href(attr)
-      params = [sort_params(attr), search_params, @_extra_params.to_query.html_safe].reject(&:blank?).join("&".html_safe)
-      current_url << "?".html_safe << params
+      current_path_with_params(sort_params(attr), params.slice(:search), @_extra_params)
     end
 
     def header_cell_link_text(attr)
