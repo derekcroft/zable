@@ -39,6 +39,11 @@ module Zable
       "#{controller.request.fullpath.split("?")[0]}"
     end
 
+    def current_path_with_params(*param_array)
+      all_params = param_array.reject(&:blank?).map {|p| p.to_query.html_safe}.join("&".html_safe)
+      current_url << "?".html_safe << all_params
+    end
+
     def param(param_type, param_key, attr)
       "#{param_type}[#{param_key}]=#{attr}"
     end

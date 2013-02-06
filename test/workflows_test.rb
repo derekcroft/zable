@@ -137,6 +137,20 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     assert_equal assigns[:items].collect(&:integer_column_2), items_in_order([1,0]).collect(&:integer_column_2)
   end
 
+  # link_sort_order helper tests
+  test "link_sort_order sets new page size in params" do
+    sort_params = { :attr => "integer_column_2", :order => "desc" }
+    search_params = {:integer_column => '3' }
+    get "/items",
+        :sort => sort_params,
+        :search => search_params,
+        :page => { :num => 1, :size => 2 }
+    click_link("#view_5_items")
+    assert_equal @controller.params[:sort], sort_params.stringify_keys
+    assert_equal @controller.params[:search], search_params.stringify_keys
+    assert_equal @controller.params[:page], { :num => '1', :size => '5' }.stringify_keys
+  end
+
   # Edge cases
   test "that call fails gracefully if you go to a nonexistent page" do
   end

@@ -1,3 +1,6 @@
+<%= link_to "View 5", set_page_size_path(5), id: "view_5_items" %>
+<%= link_to "View all", set_page_size_path(99999) %>
+
 <%=
     zable @items, paginate: true do
         column(:string_column)
