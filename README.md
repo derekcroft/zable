@@ -52,6 +52,25 @@ end
 
 As you can see, all me must do is pass in the request's params to the `populate` method. You can also attach the method after a chain of queries.
 
+Below shows an example of all possible passed parameters of interest when using sorting, searching and pagination:
+
+```ruby
+params = {
+  sort: {
+    attr: "column_1", # name of the sorted attribute
+    order: "asc" # 'asc' or 'desc' ('asc' is default)
+  },
+  search: {
+    column_1: "some_search", # key is the attr being searched on, value is the search query
+    column_2: "some_other_search"
+  },
+  page: {
+    num: 1, # page number
+    size: 20 # items per page
+  }
+}
+```
+
 ## Sorting
 
 You can easily sort on your models' column attributes via the `sortable` method provided on ActiveRecord.
@@ -79,6 +98,24 @@ end
 # in the view
 zable @items do
   column(:category)
+end
+```
+
+## Searching
+
+Similar to sorting, zable provides a `searchable` method on ActiveRecord.
+
+```ruby
+class Item < ActiveRecord::Base
+  searchable :name, :price, :created_at
+end
+```
+
+This allows us to do equality-based searching on these attributes. Again, if you would like to do something more complex, create a named scope:
+
+```ruby
+class Item < ActiveRecord::Base
+  scope :search_category, -> value { joins(:category).where("upper(items.category) like %#{value.upcase}%") }
 end
 ```
 
