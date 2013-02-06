@@ -76,9 +76,23 @@ class ZableTest < ActionView::TestCase
     assert_respond_to Item, :populate
   end
 
-  test "populate method passes page value and size to paginate method" do
+  test "populate method passes page value and size in params to paginate method" do
     Item.expects(:paginate).with(has_entries(:page => 2, :per_page => 3))
-    Item.populate :page => {:num => 2, :size => 3}
+    params = { :page => {:num => 2, :size => 3} }
+    Item.populate params, :per_page => 4
+  end
+
+  test "populate method passes per_page value if passed as option and it's not in the params" do
+    Item.expects(:paginate).with(has_entries(:page => 2, :per_page => 4))
+    params = { :page => {:num => 2} }
+    Item.populate params, :per_page => 4
+  end
+
+  test "populate method does not pass per_page setting if not in params or options" do
+    Item.per_page = 10
+    Item.expects(:paginate).with(:page => 2)
+    params = { :page => {:num => 2} }
+    Item.populate params
   end
 
   test "populate method invokes for_sort_params if sort params present in request" do

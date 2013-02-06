@@ -3,7 +3,6 @@ module Zable
   module ActiveRecord
 
     module ClassMethods
-      PAGE_DEFAULTS = { 'num' => 1 }
 
       def scoped_for_sort(params, scoped_object)
         hash = (params[:sort] || {}).stringify_keys
@@ -17,16 +16,22 @@ module Zable
         scoped_object
       end
 
-      def scoped_for_paginate(params, scoped_object)
-        page = (PAGE_DEFAULTS.merge(params[:page] || {})).stringify_keys
-        scoped_object = scoped_object.paginate(:page => page['num'], :per_page => page['size']) if scoped_object.respond_to?(:paginate)
+      def scoped_for_paginate(params, scoped_object, options)
+        page_params = (params[:page] || {}).stringify_keys
+        paginate_opts = {}
+        # params take preference over option, so that we may change page size on the frontend
+        page_size = page_params['size'] || options[:per_page]
+        paginate_opts[:page] = page_params['num'] || 1
+        paginate_opts[:per_page] = page_size if page_size.present?
+
+        scoped_object = scoped_object.paginate(paginate_opts) if scoped_object.respond_to?(:paginate)
         scoped_object
       end
 
-      def populate(params={})
+      def populate(params={}, options = {})
         obj = scoped_for_sort(params, self)
         obj = scoped_for_search(params, obj)
-        scoped_for_paginate(params, obj)
+        scoped_for_paginate(params, obj, options)
       end
 
       module Helpers
