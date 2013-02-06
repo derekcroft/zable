@@ -20,7 +20,7 @@ module Zable
         #   sortable :last_name, :created_at
         def sortable(*attr_names)
           attr_names.each do |attr_name|
-            scope "sort_#{attr_name}", -> options { order("#{table_name}.#{attr_name} #{options[:order]}") }
+            scope "sort_#{attr_name}", -> ordering { order("#{table_name}.#{attr_name} #{ordering}") }
           end
         end
 
@@ -28,7 +28,9 @@ module Zable
 
         def inject_sort_scope(sort_params)
           return unless sort_params
-          self.send scope_for_sort_attribute(sort_params), sort_params
+          sort_params.stringify_keys!
+          sort_params['order'] = 'ASC' if sort_params['order'].nil? || sort_params['order'].upcase != "DESC"
+          self.send scope_for_sort_attribute(sort_params), sort_params['order']
         end
 
         def scope_name_for_attribute(type, attr)
@@ -36,8 +38,6 @@ module Zable
         end
 
         def scope_for_sort_attribute(sort_params)
-          sort_params.stringify_keys!
-          sort_params['order'] = 'ASC' if sort_params['order'].nil? || sort_params['order'].upcase != "DESC"
           scope_name_for_attribute(:sort, sort_params['attr'])
         end
       end
