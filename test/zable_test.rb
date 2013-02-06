@@ -95,6 +95,12 @@ class ZableTest < ActionView::TestCase
     Item.populate params
   end
 
+  test "populate method runs pagination on immensely huge number if page size is set to 'all'" do
+    params = { :page => {:size => 'all'} }
+    Item.expects(:paginate).with(has_entries(:page => 1, :per_page => 99999999))
+    Item.populate params
+  end
+
   test "populate method invokes for_sort_params if sort params present in request" do
     Item.expects(:for_sort_params).with(has_entries('attr' => "string_column", 'order' => "desc")).returns(null_object)
     Item.populate :sort => {:attr => "string_column", :order => "desc"}

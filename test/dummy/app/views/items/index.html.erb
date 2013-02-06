@@ -1,5 +1,5 @@
 <%= link_to "View 5", set_page_size_path(5), id: "view_5_items" %>
-<%= link_to "View all", set_page_size_path(99999) %>
+<%= link_to "View all", set_page_size_path(), id: "view_all_items" %>
 
 <%=
     zable @items, paginate: true do

@@ -23,10 +23,12 @@ module ZableHelper
     current_sort_order == :desc ? :asc : :desc
   end
 
-  def set_page_size_path(page_size)
-    page_params = {
-      page: {size: page_size, num: 1}
-    }
+  def set_page_size_path(page_size = nil)
+    page_params = if page_size
+      { :page => {:size => page_size, :num => 1} }
+    else
+      { :page => {:size => 'all'} }
+    end
     current_path_with_params(params.slice(:sort, :search), page_params)
   end
 

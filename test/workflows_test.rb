@@ -151,6 +151,13 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     assert_equal @controller.params[:page], { :num => '1', :size => '5' }.stringify_keys
   end
 
+  test "link_sort_order link shows all records when passed nil page_size" do
+    get "/items",
+        :page => { :num => 1, :size => 2 }
+    click_link("#view_all_items")
+    assert_equal @controller.params[:page][:size], 'all'
+  end
+
   # Edge cases
   test "that call fails gracefully if you go to a nonexistent page" do
   end

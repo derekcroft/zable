@@ -18,13 +18,15 @@ module Zable
 
       def scoped_for_paginate(params, scoped_object, options)
         page_params = (params[:page] || {}).stringify_keys
-        paginate_opts = {}
-        # params take preference over option, so that we may change page size on the frontend
-        page_size = page_params['size'] || options[:per_page]
-        paginate_opts[:page] = page_params['num'] || 1
-        paginate_opts[:per_page] = page_size if page_size.present?
-
-        scoped_object = scoped_object.paginate(paginate_opts) if scoped_object.respond_to?(:paginate)
+        if scoped_object.respond_to?(:paginate)
+          paginate_opts = {}
+          paginate_opts[:page] = page_params['num'] || 1
+          # params take preference over option, so that we may change page size on the frontend
+          page_size = page_params['size'] || options[:per_page]
+          page_size = 99999999 if page_size == 'all'
+          paginate_opts[:per_page] = page_size if page_size.present?
+          scoped_object = scoped_object.paginate(paginate_opts)
+        end
         scoped_object
       end
 
