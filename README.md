@@ -16,6 +16,7 @@ end
 * **options** - (Hash)
   * **:class** - (String) Html class
   * **:id** - (String) Html id
+  * **:params** - (Hash) Additional params to be appended at the end of every header/pagination link
 
 Within the zable block, you can use the `column` method to define the columns of your table.
 
@@ -51,6 +52,35 @@ end
 
 As you can see, all me must do is pass in the request's params to the `populate` method. You can also attach the method after a chain of queries.
 
+## Sorting
+
+You can easily sort on your models' column attributes via the `sortable` method provided on ActiveRecord.
+
+```ruby
+class Item < ActiveRecord::Base
+  sortable :name, :price, :created_at
+end
+
+# in the view
+zable @items do
+  column(:name)
+  column(:price)
+  column(:created_at)
+end
+```
+
+If you want to sort on something more complex than a column in your database, you can do so by creating a named scope:
+
+```ruby
+class Item < ActiveRecord::Base
+  scope :sort_category, -> criteria { includes(:category).order("category.name #{criteria[:order]}") }
+end
+
+# in the view
+zable @items do
+  column(:category)
+end
+```
 
 ## Pagination
 
