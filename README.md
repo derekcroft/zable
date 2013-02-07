@@ -92,7 +92,7 @@ If you want to sort on something more complex than a column in your database, yo
 
 ```ruby
 class Item < ActiveRecord::Base
-  scope :sort_category, -> criteria { includes(:category).order("category.name #{criteria[:order]}") }
+  scope :sort_category, -> asc_or_desc { includes(:category).order("category.name #{asc_or_desc}") }
 end
 
 # in the view
