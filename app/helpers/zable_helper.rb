@@ -32,4 +32,12 @@ module ZableHelper
     current_path_with_params(params.slice(:sort, :search), page_params)
   end
 
+  def zable_hidden_search_fields
+    fields = ""
+    fields << hidden_field_tag('sort[attr]', params[:sort][:attr]) if params[:sort] && params[:sort][:attr]
+    fields << hidden_field_tag('sort[order]', params[:sort][:order]) if params[:sort] && params[:sort][:order]
+    fields << hidden_field_tag('page[size]', params[:page][:size]) if params[:page] && params[:page][:size]
+    fields.html_safe
+  end
+
 end
