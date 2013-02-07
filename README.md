@@ -119,6 +119,8 @@ class Item < ActiveRecord::Base
 end
 ```
 
+For a walk-through on how to create a basic search form with your table, look at [this wiki page](https://github.com/derekcroft/zable/wiki/Creating-a-search-form).
+
 ## Pagination
 
 Optionally, you can use pagination via [will_paginate](https://github.com/mislav/will_paginate). In the view, simply set the 'paginate' option:
