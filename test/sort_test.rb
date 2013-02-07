@@ -9,31 +9,31 @@ class SortTest < ActiveSupport::TestCase
   ## General sorting behavior
   test "sort params scope sorts the given attribute properly" do
     criteria = { 'attr' => 'key', 'order' => 'desc' }
-    expected_results = Thing.sort_key('order' => 'desc').all
+    expected_results = Thing.sort_key('desc').all
     assert_sort_params(criteria, expected_results)
   end
 
   test "sort scope named sort_attr is called" do
     criteria = { 'attr' => 'name', 'order' => 'asc' }
-    expected_results = Thing.sort_name('order' => 'asc').all
+    expected_results = Thing.sort_name('asc').all
     assert_sort_params(criteria, expected_results)
   end
 
   test "for_sort_params accepts symbols as keys" do
     criteria = { :attr => :name, :order => :desc }
-    expected_results = Thing.sort_name('order' => 'desc').all
+    expected_results = Thing.sort_name('desc').all
     assert_sort_params(criteria, expected_results)
   end
 
   test "individual sort scopes take symbols as keys" do
     criteria = { 'attr' => 'name', 'order' => 'desc' }
-    expected_results = Thing.sort_name(:order => :desc).all
+    expected_results = Thing.sort_name(:desc).all
     assert_sort_params(criteria, expected_results)
   end
 
   test "sort order other than asc or desc defaults to asc" do
     criteria = { 'attr' => 'key', 'order' => 'asdfasdf' }
-    expected_results = Thing.sort_key('order' => 'asc').all
+    expected_results = Thing.sort_key('asc').all
     assert_sort_params(criteria, expected_results)
   end
 
@@ -43,8 +43,8 @@ class SortTest < ActiveSupport::TestCase
 
   test "sortable creates scopes that sort by their column and a specified order" do
     # asserts that the relations are equal, not their results
-    assert_equal Item.order("items.string_column "), Item.sort_string_column({})
-    assert_equal Item.order("items.string_column DESC"), Item.sort_string_column(order: "DESC")
+    assert_equal Item.order("items.string_column "), Item.sort_string_column("")
+    assert_equal Item.order("items.string_column DESC"), Item.sort_string_column("DESC")
   end
 
   test "for_sort_params handles nil params gracefully" do
@@ -99,11 +99,8 @@ class SortTest < ActiveSupport::TestCase
     scope_method = "sort_#{attr}".to_sym
     expected_results = yield(expected_results)
 
-    criteria = {:attr => "#{attr}", :order => "ASC"}
-    assert_expected_results scope_method, criteria, sort(expected_results, :asc), &block
-
-    criteria[:order] = "DESC"
-    assert_expected_results scope_method, criteria, sort(expected_results, :desc), &block
+    ordering = "DESC"
+    assert_expected_results scope_method, ordering, sort(expected_results, :desc), &block
   end
 
   def assert_expected_results(scope_method, scope_argument, expected_results)
