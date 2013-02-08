@@ -129,6 +129,20 @@ class WorkflowsTest < ActionDispatch::IntegrationTest
     assert_equal @controller.params[:search][:integer_column], '3'
   end
 
+  test "page size param is preserved when sorting on a column" do
+    get "/items",
+        :page => { :size => 3 }
+    click_header_link("integer_column_2")
+    assert_equal @controller.params[:page][:size], '3'
+  end
+
+  test "page size param is preserved when changing pages" do
+    get "/items",
+        :page => { :size => 3 }
+    click_link("a.next_page")
+    assert_equal @controller.params[:page][:size], '3'
+  end
+
   test "page 1 is returned when sort order or column is changed" do
     Item.per_page = 2
     get "/items",

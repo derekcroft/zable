@@ -11,7 +11,12 @@ module Zable
 
       def url(page)
         page_params = {:page => {:num => page}}
-        @zable_view.current_path_with_params(page_params, @zable_view.params.slice(:search, :sort), @params)
+        @zable_view.current_path_with_params(
+          page_params,
+          @zable_view.params.slice(:search, :sort),
+          @zable_view.page_size_params,
+          @params
+        )
       end
 
     protected

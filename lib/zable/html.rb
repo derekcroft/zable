@@ -50,9 +50,15 @@ module Zable
     end
 
     def sort_params(attr)
-      params = { :sort => {:attr => attr[:name]} }
-      params[:sort][:order] = attr[:sort_order] if attr[:sorted?]
-      params
+      p = { :sort => {:attr => attr[:name]} }
+      p[:sort][:order] = attr[:sort_order] if attr[:sorted?]
+      p
+    end
+
+    def page_size_params
+      p = {}
+      p[:page] = {:size => params[:page][:size]} if params[:page] && params[:page][:size]
+      p
     end
 
     def sort_arrow_image_file(attr)
@@ -60,7 +66,7 @@ module Zable
     end
 
     def header_cell_href(attr)
-      current_path_with_params(sort_params(attr), params.slice(:search), @_extra_params)
+      current_path_with_params(sort_params(attr), params.slice(:search), page_size_params, @_extra_params)
     end
 
     def header_cell_link_text(attr)
