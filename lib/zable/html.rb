@@ -41,7 +41,7 @@ module Zable
 
     def current_path_with_params(*param_array)
       all_params = param_array.reject(&:blank?).map {|p| p.to_query.html_safe}.join("&".html_safe)
-      all_params = all_params.sub("%5B", "[").sub("%5D", "]")
+      all_params = all_params.gsub("%5B", "[").gsub("%5D", "]")
       current_url << "?".html_safe << all_params
     end
 
