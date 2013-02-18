@@ -155,7 +155,7 @@ params['page']['size'] = 15 # this takes precedence over any other settings
 
 This allows your users to set how many items are shown per page on the front end. To help with this, zable provides a `set_page_size_path(page_size)` helper method. In your view, you can do something like this:
 
-```ruby
+```erb
 <%= link_to "View 10 per page", set_page_size_path(10) %>
 <%= link_to "View all items", set_page_size_path() %>
 ```
