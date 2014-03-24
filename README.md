@@ -115,7 +115,7 @@ This allows us to do equality-based searching on these attributes. Again, if you
 
 ```ruby
 class Item < ActiveRecord::Base
-  scope :search_category, -> value { joins(:category).where("upper(items.category) like %#{value.upcase}%") }
+  scope :search_category, -> value { joins(:category).where(["upper(items.category) like %?%", value.upcase]) }
 end
 ```
 
@@ -170,7 +170,7 @@ user.rb:
 sortable :name, :email, :created_at
 
 # sort on a non-attribute
-scope :sort_age, -> criteria { includes(:profile).order("profile.age #{criteria[:order]}") }
+scope :sort_age, -> asc_or_desc { includes(:profile).order("profile.age #{asc_or_desc}") }
 ```
 
 users_controller.rb:
